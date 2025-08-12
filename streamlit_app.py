@@ -6,7 +6,6 @@ st.set_page_config(page_title="Order Splitter — Single File (Dual PDF Backends
 st.title("Order Splitter")
 st.caption("Single-file app • uses **PyPDF2** if available, else **pypdf** • per-vendor PDFs • CSV log")
 
-# ---------- Diagnostics ----------
 with st.expander("Environment diagnostics"):
     st.write({"python": sys.version})
     try:
@@ -24,7 +23,6 @@ with st.expander("Environment diagnostics"):
     except Exception as e:
         st.write({"importlib.metadata": f"error: {e}"})
 
-# ---------- Settings ----------
 ZERO_SIGNIFICANT = st.sidebar.checkbox("Treat leading zeros as significant", value=False)
 
 ANCHOR_PATTERNS = [
@@ -42,7 +40,6 @@ def normalize_key(s: str) -> str:
     return s
 
 def get_pdf_backend():
-    """Return (name, PdfReader, PdfWriter) from PyPDF2 or pypdf."""
     try:
         from PyPDF2 import PdfReader, PdfWriter
         return "PyPDF2", PdfReader, PdfWriter
@@ -219,7 +216,6 @@ def process_store_ui(store_label: str, store_key: str):
     with open(zip_path, "rb") as f:
         st.download_button(label=f"Download {os.path.basename(zip_path)}", data=f.read(), file_name=os.path.basename(zip_path), mime="application/zip")
 
-# ---- UI tabs ----
 tab1, tab2, tab3 = st.tabs(["Home Depot", "Lowe's", "Tractor Supply"])
 with tab1: process_store_ui("Home Depot", "Depot")
 with tab2: process_store_ui("Lowe's", "Lowes")
